@@ -133,7 +133,7 @@ function exconfig#apply()
 
     " set cscope file path
     if vimentry#check('enable_cscope', 'true')
-        call excscope#set_csfile(g:exvim_folder.'/cscope.out')
+        call excscope#set_csfile(g:exvim_folder)
         call exconfig#gen_sh_update_cscope(g:exvim_folder)
         call excscope#connect()
     endif
@@ -880,6 +880,9 @@ function exconfig#update_exvim_files()
 
     " update cscope
     if vimentry#check('enable_cscope','true')
+        "cscope kill (windows path only)
+        silent exec "cscope kill ".ex#path#translate(g:exvim_project_root.'/.exvim.'.g:exvim_project_name.'/cscope.out','windows')
+
         let cmd .= and
         let cmd .= shell_exec . ' ' . path.'update-cscope'.suffix
         let and = shell_and
